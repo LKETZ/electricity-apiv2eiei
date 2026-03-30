@@ -41,3 +41,4 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/electricity-api:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/electricity-api:${{ github.sha }}
+            
