@@ -9,7 +9,7 @@ describe('Electricity API Endpoints', () => {
       expect(res.status).toBe(200);
       expect(typeof res.body).toBe('object');
     });
-
+    // send post but api only accept get
     it('Invalid: should reject POST method', async () => {
       const res = await request(app).post('/api/usage/total-by-year');
       expect(res.status).toBe(404);
@@ -30,38 +30,41 @@ describe('Electricity API Endpoints', () => {
   });
 
   describe('API 3: Usage of specific province by specific year', () => {
+    //query with valid province and year
     it('Valid: should return usage for specific province and year', async () => {
       const res = await request(app).get('/api/usage/Bangkok/2566');
       expect(res.status).toBe(200);
       expect(res.body.province_name).toBe('Bangkok');
     });
-
+    //send only province without year
     it('Invalid: should handle missing year', async () => {
       const res = await request(app).get('/api/usage/Bangkok');
       expect(res.status).toBe(404);
     });
   });
-
+  
   describe('API 4: Users of specific province by specific year', () => {
+    //response เป็น array (เช่น list ของหลายปี)
     it('Valid: should return users for specific province and year', async () => {
       const res = await request(app).get('/api/users/Bangkok/2566');
       expect(res.status).toBe(200);
       expect(res.body.province_name).toBe('Bangkok');
     });
-
+    //send only province without year
     it('Invalid: should handle missing year', async () => {
       const res = await request(app).get('/api/users/Bangkok');
       expect(res.status).toBe(404);
     });
   });
 
-  describe('API 5: Usage history by specific province', () => {
+  describe('API 5: Usage history by specific province', () => {    
+    //response เป็น array (เช่น list ของหลายปี)
     it('Valid: should return usage history for specific province', async () => {
       const res = await request(app).get('/api/usage/history/Bangkok');
       expect(res.status).toBe(200);
       expect(Array.isArray(res.body)).toBe(true);
     });
-
+    //ใส่จังหวัดผิด เช่น "InvalidProvince" ซึ่งไม่มีในฐานข้อมูล
     it('Invalid: should handle invalid province', async () => {
       const res = await request(app).get('/api/usage/history/InvalidProvince');
       expect(res.status).toBe(200);
@@ -71,12 +74,13 @@ describe('Electricity API Endpoints', () => {
   });
 
   describe('API 6: User history by specific province', () => {
+    //response เป็น array (เช่น list ของหลายปี)
     it('Valid: should return user history for specific province', async () => {
       const res = await request(app).get('/api/users/history/Bangkok');
       expect(res.status).toBe(200);
       expect(Array.isArray(res.body)).toBe(true);
     });
-
+    //ใส่จังหวัดผิด เช่น "InvalidProvince" ซึ่งไม่มีในฐานข้อมูล
     it('Invalid: should handle invalid province', async () => {
       const res = await request(app).get('/api/users/history/InvalidProvince');
       expect(res.status).toBe(200);
